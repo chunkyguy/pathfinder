@@ -12,15 +12,16 @@
 		19473755187DE7FC00653E10 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19473754187DE7FC00653E10 /* UIKit.framework */; };
 		1947375B187DE7FC00653E10 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 19473759187DE7FC00653E10 /* InfoPlist.strings */; };
 		1947375D187DE7FC00653E10 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1947375C187DE7FC00653E10 /* main.m */; };
-		19473761187DE7FC00653E10 /* he_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 19473760187DE7FC00653E10 /* he_AppDelegate.m */; };
+		19473761187DE7FC00653E10 /* he_AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19473760187DE7FC00653E10 /* he_AppDelegate.mm */; };
 		19473764187DE7FC00653E10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 19473762187DE7FC00653E10 /* Main.storyboard */; };
-		19473767187DE7FC00653E10 /* he_ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19473766187DE7FC00653E10 /* he_ViewController.m */; };
+		19473767187DE7FC00653E10 /* he_ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19473766187DE7FC00653E10 /* he_ViewController.mm */; };
 		19473769187DE7FC00653E10 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19473768187DE7FC00653E10 /* Images.xcassets */; };
 		19473770187DE7FC00653E10 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1947376F187DE7FC00653E10 /* XCTest.framework */; };
 		19473771187DE7FC00653E10 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19473750187DE7FC00653E10 /* Foundation.framework */; };
 		19473772187DE7FC00653E10 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19473754187DE7FC00653E10 /* UIKit.framework */; };
 		1947377A187DE7FC00653E10 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 19473778187DE7FC00653E10 /* InfoPlist.strings */; };
 		1947377C187DE7FC00653E10 /* PathFinderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1947377B187DE7FC00653E10 /* PathFinderTests.m */; };
+		19473788187DE89700653E10 /* pathfinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19473786187DE89700653E10 /* pathfinder.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,16 +44,18 @@
 		1947375C187DE7FC00653E10 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1947375E187DE7FC00653E10 /* PathFinder-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PathFinder-Prefix.pch"; sourceTree = "<group>"; };
 		1947375F187DE7FC00653E10 /* he_AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = he_AppDelegate.h; sourceTree = "<group>"; };
-		19473760187DE7FC00653E10 /* he_AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = he_AppDelegate.m; sourceTree = "<group>"; };
+		19473760187DE7FC00653E10 /* he_AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = he_AppDelegate.mm; sourceTree = "<group>"; };
 		19473763187DE7FC00653E10 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		19473765187DE7FC00653E10 /* he_ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = he_ViewController.h; sourceTree = "<group>"; };
-		19473766187DE7FC00653E10 /* he_ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = he_ViewController.m; sourceTree = "<group>"; };
+		19473766187DE7FC00653E10 /* he_ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = he_ViewController.mm; sourceTree = "<group>"; };
 		19473768187DE7FC00653E10 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1947376E187DE7FC00653E10 /* PathFinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PathFinderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1947376F187DE7FC00653E10 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		19473777187DE7FC00653E10 /* PathFinderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PathFinderTests-Info.plist"; sourceTree = "<group>"; };
 		19473779187DE7FC00653E10 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1947377B187DE7FC00653E10 /* PathFinderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathFinderTests.m; sourceTree = "<group>"; };
+		19473786187DE89700653E10 /* pathfinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pathfinder.cpp; sourceTree = "<group>"; };
+		19473787187DE89700653E10 /* pathfinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pathfinder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,11 +115,12 @@
 		19473756187DE7FC00653E10 /* PathFinder */ = {
 			isa = PBXGroup;
 			children = (
+				19473785187DE89700653E10 /* astar */,
 				1947375F187DE7FC00653E10 /* he_AppDelegate.h */,
-				19473760187DE7FC00653E10 /* he_AppDelegate.m */,
+				19473760187DE7FC00653E10 /* he_AppDelegate.mm */,
 				19473762187DE7FC00653E10 /* Main.storyboard */,
 				19473765187DE7FC00653E10 /* he_ViewController.h */,
-				19473766187DE7FC00653E10 /* he_ViewController.m */,
+				19473766187DE7FC00653E10 /* he_ViewController.mm */,
 				19473768187DE7FC00653E10 /* Images.xcassets */,
 				19473757187DE7FC00653E10 /* Supporting Files */,
 			);
@@ -150,6 +154,15 @@
 				19473778187DE7FC00653E10 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		19473785187DE89700653E10 /* astar */ = {
+			isa = PBXGroup;
+			children = (
+				19473786187DE89700653E10 /* pathfinder.cpp */,
+				19473787187DE89700653E10 /* pathfinder.h */,
+			);
+			path = astar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,9 +263,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19473788187DE89700653E10 /* pathfinder.cpp in Sources */,
 				1947375D187DE7FC00653E10 /* main.m in Sources */,
-				19473767187DE7FC00653E10 /* he_ViewController.m in Sources */,
-				19473761187DE7FC00653E10 /* he_AppDelegate.m in Sources */,
+				19473767187DE7FC00653E10 /* he_ViewController.mm in Sources */,
+				19473761187DE7FC00653E10 /* he_AppDelegate.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +393,7 @@
 		19473780187DE7FC00653E10 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -392,6 +407,7 @@
 		19473781187DE7FC00653E10 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

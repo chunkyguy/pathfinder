@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface he_ViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIStepper *columns;
+@property (weak, nonatomic) IBOutlet UIStepper *rows;
+@property (weak, nonatomic) IBOutlet UILabel *columnLbl;
+@property (weak, nonatomic) IBOutlet UILabel *rowLbl;
+- (IBAction)updateUI:(id)sender;
 
 @end
