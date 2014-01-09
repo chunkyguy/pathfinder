@@ -90,11 +90,16 @@
   free(map);
   map = NULL;
  }
+ 
+ unsigned char v;
  map = (unsigned char *)malloc(sizeof(unsigned char) * nRows * nCols);
  for (int r = 0; r < nRows; ++r) {
   for (int c = 0; c < nCols; ++c) {
-   map[r*nRows + c] = (rand()%3 > 0) ? 1 : 0;
+   v = (rand()%3 > 0) ? 1 : 0;
+   printf("%d",v);
+   map[COORD_TO_INDEX(r, c, nCols)] = v;
   }
+  printf("\n");
  }
 }
 
@@ -110,13 +115,6 @@
  
  /** Create a new map*/
  [self createMapWithRows:nRows cols:nCols];
- for (int i = 0; i < nRows; ++i) {
-  for (int c = 0; c < nCols; ++c) {
-   printf("%d",map[i*nRows+c]);
-  }
-  printf("\n");
- }
-
 
  /** Remove any added tiles */
  for (UIView *vw in self.view.subviews) {
