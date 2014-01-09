@@ -20,14 +20,14 @@
                                 <rect key="frame" x="465" y="975" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <connections>
-                                    <action selector="updateUI:" destination="BYZ-38-t0r" eventType="valueChanged" id="EcL-Bd-byd"/>
+                                    <action selector="updateStepper:" destination="BYZ-38-t0r" eventType="valueChanged" id="h9P-J3-5H1"/>
                                 </connections>
                             </stepper>
                             <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="rnX-uT-xeH">
                                 <rect key="frame" x="148" y="975" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <connections>
-                                    <action selector="updateUI:" destination="BYZ-38-t0r" eventType="valueChanged" id="c4Q-Zl-MJ2"/>
+                                    <action selector="updateStepper:" destination="BYZ-38-t0r" eventType="valueChanged" id="4Sw-oK-RsK"/>
                                 </connections>
                             </stepper>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RzX-CT-okF">

@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *columnLbl;
 @property (weak, nonatomic) IBOutlet UILabel *rowLbl;
 - (IBAction)updateUI:(id)sender;
+- (IBAction)updateStepper:(UIStepper *)sender;
 
 @end

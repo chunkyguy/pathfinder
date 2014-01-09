@@ -6,9 +6,19 @@
 //  Copyright (c) 2014 whackylabs. All rights reserved.
 //
 
+#define PATH_NONE -1
+#define PATH_BUFOVERFLOW -2
+
+/** Get map index from map coordinates
+ * @param row The row of the map coordinate
+ * @param col The column of the map coordinate
+ * @param width The width of the map
+ * @note The index not guaranteed to be a valid.
+ */
+#define COORD_TO_INDEX(row, col, width) ((row*width) + col)
+
 /*
  Implement a path-finding algorithm in C++ that finds and outputs a shortest path between start and target using the following function declaration:
- 
  int FindPath( const int nStartX, const int nStartY, const int nTargetX, const int nTargetY, const unsigned char* pMap, const int nMapWidth, const int nMapHeight, int* pOutBuffer, const int nOutBufferSize );
  
  - nStartX and nStartY are the coordinates of the start position.
@@ -26,18 +36,8 @@
  * So, path length between {n,m} and {n,m+1} is 1
  *
  * Returns -2 when path is larger than nOutBufferSize
+ * The pOutBuffer has indices in reverse order, from target to source. 
  */
-
-#define PATH_NONE -1
-#define PATH_BUFOVERFLOW -2
-
-/** Get map index from map coordinates
- * @param row The row of the map coordinate
- * @param col The column of the map coordinate
- * @param width The width of the map
- * @note The index not guaranteed to be a valid.
- */
-#define COORD_TO_INDEX(row, col, width) ((row*width) + col)
 
 int FindPath(const int nStartX,
              const int nStartY,

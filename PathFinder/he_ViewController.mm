@@ -9,13 +9,13 @@
 #import "he_ViewController.h"
 #import "astar/pathfinder.h"
 
-#define DEFAULT_ROW 25
-#define DEFAULT_COL 25
+#define DEFAULT_ROW 27
+#define DEFAULT_COL 21
 
 #define MAP_Y_OFFSET 60
 
 /** Add/subtract some number to convert between index and tag 
- * Why is this? Because it's not necessary that for index=0 we have a TileView::tag=0 available.
+ * Why is this? Because it's not necessary that for index=0 we have a TileView::tag=0 available as subview.
  */
 #define INDEX_TO_TAG(i) (1000+i)
 #define TAG_TO_INDEX(t) (t-1000)
@@ -31,8 +31,17 @@
   self.tag = INDEX_TO_TAG(index);
   self.text = [NSString stringWithFormat:@"%d",index];
   self.textAlignment = NSTextAlignmentCenter;
+  self.adjustsFontSizeToFitWidth = YES;
  }
  return self;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+ CGContextRef context = UIGraphicsGetCurrentContext();
+ CGContextSetStrokeColorWithColor(context, [UIColor blackColor].CGColor);
+ CGContextStrokeRectWithWidth(context, self.bounds, 1.0f);
+ [super drawRect:rect];
 }
 @end
 
@@ -64,6 +73,8 @@
  map = NULL;
  touchCount = 0;
  [self updateUI:nil];
+ [self updateStepper:self.rows];
+ [self updateStepper:self.columns];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,6 +88,7 @@
 {
  if (map) {
   free(map);
+  map = NULL;
  }
  map = (unsigned char *)malloc(sizeof(unsigned char) * nRows * nCols);
  for (int r = 0; r < nRows; ++r) {
@@ -105,8 +117,6 @@
   printf("\n");
  }
 
- self.rowLbl.text = [NSString stringWithFormat:@"%d",nRows];
- self.columnLbl.text = [NSString stringWithFormat:@"%d",nCols];
 
  /** Remove any added tiles */
  for (UIView *vw in self.view.subviews) {
@@ -127,6 +137,14 @@
    [self.view addSubview:tileVw];
    tileVw.backgroundColor = (map[index])?[UIColor greenColor]:[UIColor blackColor];
   }
+ }
+}
+
+- (IBAction)updateStepper:(UIStepper *)sender {
+ if (sender == self.rows) {
+  self.rowLbl.text = [NSString stringWithFormat:@"%d",(int)sender.value];
+ } else {
+  self.columnLbl.text = [NSString stringWithFormat:@"%d",(int)sender.value];
  }
 }
 
