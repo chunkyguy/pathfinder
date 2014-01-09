@@ -5,3 +5,4 @@ A simple iPad app to demonstrate path finding with A-star algorithm.
 
 Launch the app and tap on any two grids to find the shortest path between them.
 
+![Imgur](http://i.imgur.com/e9uyBoG.png)
