@@ -9,9 +9,6 @@
 /* Using A* path finding algorithm */
 #include "pathfinder.h"
 
-/* MARK: Misc */
-#define coordToIndex(row, col, width) ((row*width) + col)
-
 /* MARK: Tile */
 typedef struct Tile_ {
  int row, col;
@@ -61,7 +58,7 @@ bool Tile_IsTraversable(const Tile *t, const unsigned char *map, const int mapWi
   return false;
  }
  /* test if tile is walkable */
- int index = coordToIndex(t->row, t->col, mapWidth);
+ int index = COORD_TO_INDEX(t->row, t->col, mapWidth);
  return (map[index] != 0);
 }
 
@@ -111,7 +108,7 @@ void List_Add(List *l, Tile *t)
 void List_Remove(List *l, Tile *t)
 {
  l->size--;
- if (t == l->head) {
+ if (Tile_Equal(t, l->head)) {
   l->head = l->head->next;
   return;
  }
@@ -180,7 +177,7 @@ int FindPath(const int nStartX,
  
  /*already at the target*/
  if (Tile_Equal(start, target)) {
-  pOutBuffer[0] = coordToIndex(start->row, start->col, nMapWidth);
+  pOutBuffer[0] = COORD_TO_INDEX(start->row, start->col, nMapWidth);
   return 0;
  }
 
@@ -206,7 +203,7 @@ int FindPath(const int nStartX,
   if (Tile_Equal(current, target)) {
    int length = 0;
    for (Tile *path = current; path; path = path->parent) {
-    pOutBuffer[length++] = coordToIndex(path->row, path->col, nMapWidth);
+    pOutBuffer[length++] = COORD_TO_INDEX(path->row, path->col, nMapWidth);
    }
    return length-1; /*balance the extra post-increment*/
   }
@@ -235,19 +232,20 @@ int FindPath(const int nStartX,
    }
    
    int distance = Tile_Distance(current, adjacent);
-
-   /*else if already in open list: test if new score would be lower | if yes update parent*/
    Tile *savedAdjacent = List_Contains(&openList, adjacent);
-   if (savedAdjacent && (current->distance + distance < savedAdjacent->distance)) {
-    tbufIndex--;
-    adjacent = savedAdjacent;
-    adjacent->parent = current;
-    adjacent->distance = current->distance + distance;
-   } else { /*else compute score | set parent | add to open list*/
+
+   /* if not in open list compute score | set parent | add to open list */
+   if (!savedAdjacent) {
     adjacent->parent = current;
     adjacent->distance = current->distance + distance;
     adjacent->heuristic = Tile_Heuristic(adjacent, target);
     List_Add(&openList, adjacent);
+   } else if (savedAdjacent && (current->distance + distance < savedAdjacent->distance)) {
+    /*else if already in open list: test if new score would be lower | if yes update parent*/
+    tbufIndex--;
+    adjacent = savedAdjacent;
+    adjacent->parent = current;
+    adjacent->distance = current->distance + distance;
    }
   }
  }

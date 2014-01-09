@@ -31,6 +31,14 @@
 #define PATH_NONE -1
 #define PATH_BUFOVERFLOW -2
 
+/** Get map index from map coordinates
+ * @param row The row of the map coordinate
+ * @param col The column of the map coordinate
+ * @param width The width of the map
+ * @note The index not guaranteed to be a valid.
+ */
+#define COORD_TO_INDEX(row, col, width) ((row*width) + col)
+
 int FindPath(const int nStartX,
              const int nStartY,
              const int nTargetX,

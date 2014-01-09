@@ -9,8 +9,8 @@
 #import "he_ViewController.h"
 #import "astar/pathfinder.h"
 
-#define DEFAULT_ROW 10
-#define DEFAULT_COL 10
+#define DEFAULT_ROW 25
+#define DEFAULT_COL 25
 
 #define MAP_Y_OFFSET 60
 
@@ -151,6 +151,9 @@
     tileVw.backgroundColor = (map[index])?[UIColor greenColor]:[UIColor blackColor];
    }
   }
+  int index = COORD_TO_INDEX(startX, startY, (int)self.columns.value);
+  TileView *selectedVw = (TileView *)[self.view viewWithTag:INDEX_TO_TAG(index)];
+  selectedVw.backgroundColor = [UIColor blueColor];
  } else if (touchCount == 1) {
   /* save target coords*/
   targetX = r;
