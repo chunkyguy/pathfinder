@@ -20,10 +20,10 @@ typedef struct Tile_ {
 
 /** Initialize the tile
  * @param t Tile
- * @param xx x-coordinate
- * @param yy y-coordinate
+ * @param r row coordinate
+ * @param c column coordinate
  */
-void Tile_Init(Tile *t, const int r, const int c)
+static void Tile_Init(Tile *t, const int r, const int c)
 {
  t->row = r;
  t->col = c;
@@ -34,13 +34,13 @@ void Tile_Init(Tile *t, const int r, const int c)
 }
 
 /** Calculate total score for a tile*/
-int Tile_Score(const Tile *t)
+static int Tile_Score(const Tile *t)
 {
  return t->distance + t->heuristic;
 }
 
 /** Tests whether two tiles are at same location */
-bool Tile_Equal(const Tile *one, const Tile *two)
+static bool Tile_Equal(const Tile *one, const Tile *two)
 {
  return ((one->row == two->row) && (one->col == two->col));
 }
@@ -51,7 +51,7 @@ bool Tile_Equal(const Tile *one, const Tile *two)
  * @param mapWidth map width
  * @param mapHeight mapHeight
  */
-bool Tile_IsTraversable(const Tile *t, const unsigned char *map, const int mapWidth, const int mapHeight)
+static bool Tile_IsTraversable(const Tile *t, const unsigned char *map, const int mapWidth, const int mapHeight)
 {
  /*test if tile is within map*/
  if (t->row < 0 || t->col < 0 || t->row >= mapHeight || t->col >= mapWidth) {
@@ -63,13 +63,13 @@ bool Tile_IsTraversable(const Tile *t, const unsigned char *map, const int mapWi
 }
 
 /** Distance between tiles */
-int Tile_Distance(const Tile *start, const Tile *end)
+static int Tile_Distance(const Tile *start, const Tile *end)
 {
  return 1;
 }
 
 /** The manhattan distance between two tiles */
-int Tile_Heuristic(const Tile *start, const Tile *end)
+static int Tile_Heuristic(const Tile *start, const Tile *end)
 {
  int rdiff = end->row - start->row;
  rdiff *= (rdiff < 0) ? -1 : 1;
@@ -93,7 +93,7 @@ void List_Init(List *l)
 }
 
 /** Add a Tile object to the list */
-void List_Add(List *l, Tile *t)
+static void List_Add(List *l, Tile *t)
 {
  l->size++;
  if (!l->head) {
@@ -105,7 +105,7 @@ void List_Add(List *l, Tile *t)
 }
 
 /** Remove the tile object from the list */
-void List_Remove(List *l, Tile *t)
+static void List_Remove(List *l, Tile *t)
 {
  l->size--;
  if (Tile_Equal(t, l->head)) {
@@ -120,7 +120,7 @@ void List_Remove(List *l, Tile *t)
 }
 
 /** Search and return the tile in the list with lowest score */
-Tile *List_SearchLowest(List *l)
+static Tile *List_SearchLowest(List *l)
 {
  Tile *lowest = l->head;
  for (Tile *t = l->head->next; t; t = t->next) {
@@ -135,7 +135,7 @@ Tile *List_SearchLowest(List *l)
  * returns if found the tile from list
  * else returns NULL
  */
-Tile *List_Contains(List *l, Tile *t)
+static Tile *List_Contains(List *l, Tile *t)
 {
  for (Tile *lt = l->head; lt; lt = lt->next) {
   if (Tile_Equal(lt, t)) {
@@ -146,15 +146,15 @@ Tile *List_Contains(List *l, Tile *t)
 }
 
 /* MARK: Pathfinder */
-int FindPath(const int nStartX,
-             const int nStartY,
-             const int nTargetX,
-             const int nTargetY,
-             const unsigned char* pMap,
-             const int nMapWidth,
-             const int nMapHeight,
-             int* pOutBuffer,
-             const int nOutBufferSize)
+int FindPath(const int startX,
+                 const int startY,
+                 const int targetX,
+                 const int targetY,
+                 const unsigned char* map,
+                 const int mapWidth,
+                 const int mapHeight,
+                 int* outBuffer,
+                 const int outBufferSize)
 {
  /* Create open and close lists */
  List openList, closeList;
@@ -164,33 +164,33 @@ int FindPath(const int nStartX,
  /* Create a tile buffer where all the tiles live 
   * Extra 2 is for start and target tile that we fill
   */
- int tbufferSize = nOutBufferSize+2;
+ int tbufferSize = outBufferSize+2;
  Tile tbuffer[tbufferSize];
  int tbufIndex = 0;
 
  /* Get the start tile */
  if (tbufIndex >= tbufferSize) {  return PATH_BUFOVERFLOW; }
  Tile *start = &tbuffer[tbufIndex++];
- Tile_Init(start, nStartX, nStartY);
+ Tile_Init(start, startX, startY);
 
  /* Get the target tile */
  if (tbufIndex >= tbufferSize) {  return PATH_BUFOVERFLOW; }
  Tile *target = &tbuffer[tbufIndex++];
- Tile_Init(target, nTargetX, nTargetY);
+ Tile_Init(target, targetX, targetY);
 
  /*start is on the non-traversable tile*/
- if (!Tile_IsTraversable(start, pMap, nMapWidth, nMapHeight)) {
+ if (!Tile_IsTraversable(start, map, mapWidth, mapHeight)) {
   return PATH_NONE;
  }
 
  /*target is on the non-traversable tile*/
- if (!Tile_IsTraversable(target, pMap, nMapWidth, nMapHeight)) {
+ if (!Tile_IsTraversable(target, map, mapWidth, mapHeight)) {
   return PATH_NONE;
  }
 
  /*already at the target*/
  if (Tile_Equal(start, target)) {
-  pOutBuffer[0] = COORD_TO_INDEX(start->row, start->col, nMapWidth);
+  outBuffer[0] = COORD_TO_INDEX(start->row, start->col, mapWidth);
   return 0;
  }
 
@@ -211,7 +211,7 @@ int FindPath(const int nStartX,
   if (Tile_Equal(current, target)) {
    int length = 0;
    for (Tile *path = current; path; path = path->parent) {
-    pOutBuffer[length++] = COORD_TO_INDEX(path->row, path->col, nMapWidth);
+    outBuffer[length++] = COORD_TO_INDEX(path->row, path->col, mapWidth);
    }
    return length-1; /*balance the extra post-increment*/
   }
@@ -228,7 +228,7 @@ int FindPath(const int nStartX,
    }
    
    /*is tile valid*/
-   if (!Tile_IsTraversable(adjacent, pMap, nMapWidth, nMapHeight)) {
+   if (!Tile_IsTraversable(adjacent, map, mapWidth, mapHeight)) {
     tbufIndex--;
     continue;
    }

@@ -25,12 +25,12 @@
  * @param pOutBuffer is where you should output the found path and nOutBufferSize is the maximum length of a path that can be written to pOutBuffer. Entries in pOutBuffer are indices into pMap.
  * @return The length of the path between Start and Target. PATH_NONE if no path exists. PATH_BUFOVERFLOW if pOutBuffer is smaller than output.
 */
-int FindPath(const int nStartX,
-             const int nStartY,
-             const int nTargetX,
-             const int nTargetY,
-             const unsigned char* pMap,
-             const int nMapWidth,
-             const int nMapHeight,
-             int* pOutBuffer,
-             const int nOutBufferSize);
+int FindPath(const int startX,
+             const int startY,
+             const int targetX,
+             const int targetY,
+             const unsigned char* map,
+             const int mapWidth,
+             const int mapHeight,
+             int* outBuffer,
+             const int outBufferSize);
