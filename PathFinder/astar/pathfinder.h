@@ -17,12 +17,12 @@
  */
 #define COORD_TO_INDEX(row, col, width) ((row*width) + col)
 
-/*
+/**
  * Shortest path between start and target
- * @param nStartX and nStartY are the coordinates of the start position.
- * @param nTargetX and nTargetY are the coordinates of the target position.
- * @param pMap is a nMapWidth * nMapHeight large grid where traversable locations are marked with 1 and non-traversable as 0. Locations are considered to be adjacent horizontally and vertically but not diagonally.
- * @param pOutBuffer is where you should output the found path and nOutBufferSize is the maximum length of a path that can be written to pOutBuffer. Entries in pOutBuffer are indices into pMap.
+ * @param startX and nStartY are the coordinates of the start position.
+ * @param targetX and nTargetY are the coordinates of the target position.
+ * @param map is a nMapWidth * nMapHeight large grid where traversable locations are marked with 1 and non-traversable as 0. Locations are considered to be adjacent horizontally and vertically but not diagonally.
+ * @param outBuffer is where you should output the found path and nOutBufferSize is the maximum length of a path that can be written to pOutBuffer. Entries in pOutBuffer are indices into pMap.
  * @return The length of the path between Start and Target. PATH_NONE if no path exists. PATH_BUFOVERFLOW if pOutBuffer is smaller than output.
 */
 int FindPath(const int startX,
