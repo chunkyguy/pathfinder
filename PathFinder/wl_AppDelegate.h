@@ -1,5 +1,5 @@
 //
-//  he_AppDelegate.h
+//  wl_AppDelegate.h
 //  PathFinder
 //
 //  Created by Sid on 09/01/14.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface he_AppDelegate : UIResponder <UIApplicationDelegate>
+@interface wl_AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

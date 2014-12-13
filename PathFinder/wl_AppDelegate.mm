@@ -1,14 +1,14 @@
 //
-//  he_AppDelegate.m
+//  wl_AppDelegate.m
 //  PathFinder
 //
 //  Created by Sid on 09/01/14.
 //  Copyright (c) 2014 whackylabs. All rights reserved.
 //
 
-#import "he_AppDelegate.h"
+#import "wl_AppDelegate.h"
 
-@implementation he_AppDelegate
+@implementation wl_AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

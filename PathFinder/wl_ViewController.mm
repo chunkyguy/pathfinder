@@ -1,13 +1,14 @@
 //
-//  he_ViewController.m
+//  wl_ViewController.m
 //  PathFinder
 //
 //  Created by Sid on 09/01/14.
 //  Copyright (c) 2014 whackylabs. All rights reserved.
 //
 
-#import "he_ViewController.h"
+#import "wl_ViewController.h"
 #import "astar/pathfinder.h"
+#import "wl_Map.h"
 
 #define DEFAULT_ROW 27
 #define DEFAULT_COL 21
@@ -45,7 +46,7 @@
 }
 @end
 
-@interface he_ViewController () {
+@interface wl_ViewController () {
     /* Values to be passed to the pathfinder */
     unsigned char *map;
     int touchCount;
@@ -53,10 +54,11 @@
     int startY;
     int targetX;
     int targetY;
+    wl::Map _map;
 }
 @end
 
-@implementation he_ViewController
+@implementation wl_ViewController
 
 - (void)dealloc
 {
@@ -90,6 +92,8 @@
         free(map);
         map = NULL;
     }
+
+    _map = wl::CreateRandomMap(GLKVector2Make(nRows, nCols));
     
     unsigned char v;
     map = (unsigned char *)malloc(sizeof(unsigned char) * nRows * nCols);
