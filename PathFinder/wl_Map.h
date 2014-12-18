@@ -12,23 +12,40 @@
 #include <GLKit/GLKMath.h>
 
 namespace wl {
+
+#pragma mark -
+#pragma mark Coordinate
+#pragma mark -
     
+    class Coordinate {
+    public:
+        Coordinate(const unsigned int r = 0, const unsigned c = 0);
+        unsigned int GetRow() const;
+        unsigned int GetColumn() const;
+        
+    private:
+        unsigned int _row;
+        unsigned int _col;
+    };
+
+    bool operator==(const Coordinate &a, const Coordinate &b);
+
 #pragma mark -
 #pragma mark Tile
 #pragma mark -
     
     class Tile {
     public:
-        Tile(const unsigned int r, const unsigned int c, const bool w);
-        const unsigned int GetRow() const;
-        const unsigned int GetColumn() const;
+        Tile(const Coordinate &c, const bool w);
+        const Coordinate GetCoordinate() const;
         const bool IsWalkable() const;
         
     private:
-        unsigned int _row;
-        unsigned int _col;
+        Coordinate _coord;
         bool _walkable;
     };
+    
+    bool operator==(const Tile &a, const Tile &b);
     
 #pragma mark -
 #pragma mark Map
@@ -39,6 +56,7 @@ namespace wl {
         Map();
         Map(const GLKVector2 &size, const std::vector<Tile> &data);
         const GLKVector2 GetSize() const;
+        Tile &GetTileAtCoordinate(const Coordinate &coords);
         
     private:
         GLKVector2 _size;

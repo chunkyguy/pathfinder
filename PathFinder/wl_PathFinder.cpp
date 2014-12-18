@@ -7,3 +7,22 @@
 //
 
 #include "wl_PathFinder.h"
+
+namespace wl {
+    
+    
+    std::list<Tile> FindPath(const GLKVector2 &start,
+                             const GLKVector2 &end,
+                             const wl::Map &map)
+    {
+        std::list<Tile> path;
+        
+        std::list<Tile*> open;
+        std::list<Tile*> close;
+        
+        // open.push_back(map.GetTileAtCoordinate(start));
+        
+        return path;
+    }
+    
+}
