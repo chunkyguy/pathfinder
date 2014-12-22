@@ -9,7 +9,9 @@
 #ifndef __PathFinder__wl_Map__
 #define __PathFinder__wl_Map__
 #include <vector>
+#include <iosfwd>
 #include <GLKit/GLKMath.h>
+#include <list>
 
 namespace wl {
 
@@ -29,7 +31,8 @@ namespace wl {
     };
 
     bool operator==(const Coordinate &a, const Coordinate &b);
-
+    std::ostream &operator<<(std::ostream &os, const Coordinate &coord);
+    
 #pragma mark -
 #pragma mark Tile
 #pragma mark -
@@ -39,10 +42,19 @@ namespace wl {
         Tile(const Coordinate &c, const bool w);
         const Coordinate GetCoordinate() const;
         const bool IsWalkable() const;
+        int GetScore() const;
+        int GetDistance() const;
+        Tile *GetParent() const;
+        void UpdateParent(Tile *tile);
+        void UpdateHeuristics(const int heuristics);
         
     private:
+
         Coordinate _coord;
         bool _walkable;
+        int _distance;
+        int _heuristic;
+        Tile *_parent;
     };
     
     bool operator==(const Tile &a, const Tile &b);
@@ -56,7 +68,8 @@ namespace wl {
         Map();
         Map(const GLKVector2 &size, const std::vector<Tile> &data);
         const GLKVector2 GetSize() const;
-        Tile &GetTileAtCoordinate(const Coordinate &coords);
+        const Tile *GetTileAtCoordinate(const Coordinate &coords) const;
+        Tile *GetTileAtCoordinate(const Coordinate &coords);
         
     private:
         GLKVector2 _size;
@@ -67,7 +80,14 @@ namespace wl {
 #pragma mark Utility
 #pragma mark -
 
+    /* Manhattan distance */
+    int ManhattanDistance(const Coordinate &a, const Coordinate &b);
+    
+    /* neighbour coordinates */
+    std::vector<Coordinate> Neighbors(const Coordinate &coord);
+    
     unsigned int TileIndex(const Tile &tile, const Map &map);
+    
     Map CreateRandomMap(const GLKVector2 &size);
 }
 #endif /* defined(__PathFinder__wl_Map__) */

@@ -7,6 +7,7 @@
 //
 
 #import "wl_ViewController.h"
+#include <iostream>
 #import "astar/pathfinder.h"
 #import "wl_Map.h"
 #import "wl_PathFinder.h"
@@ -15,6 +16,15 @@
 #define DEFAULT_COL 21
 
 #define MAP_Y_OFFSET 60
+
+void LogPath(const std::list<wl::Tile *> &path)
+{
+    std::cout << "path-size: " << path.size() << std::endl;
+    std::for_each(path.begin(), path.end(), [](const wl::Tile *tile) {
+        std::cout << tile->GetCoordinate() << std::endl;
+    });
+}
+
 
 ///** Add/subtract some number to convert between index and tag
 // * Why is this? Because it's not necessary that for index=0 we have a TileView::tag=0 available as subview.
@@ -56,8 +66,7 @@
 @interface wl_ViewController () {
     /* Values to be passed to the pathfinder */
     int _touchCount;
-    wl::Coordinate _source;
-    wl::Coordinate _destination;
+    wl::Coordinate _lastTouch;
     wl::Map _map;
 }
 @end
@@ -121,7 +130,7 @@
             TileView *tileVw = [[TileView alloc] initWithFrame:CGRectOffset(tileRect, c * tileWidth, r * tileHeight) coordinate:wl::Coordinate(r, c)];
             [self.view addSubview:tileVw];
             
-            tileVw.backgroundColor = (_map.GetTileAtCoordinate(wl::Coordinate(r, c)).IsWalkable()) ? [UIColor brownColor] : [UIColor blueColor];
+            tileVw.backgroundColor = (_map.GetTileAtCoordinate(wl::Coordinate(r, c))->IsWalkable()) ? [UIColor brownColor] : [UIColor blueColor];
         }
     }
 }
@@ -134,55 +143,37 @@
     }
 }
 
-- (void)drawMap
+- (BOOL)path:(const std::list<wl::Tile *> &)path contains:(wl::Coordinate)coordinate
+{
+    return (std::find_if(path.begin(), path.end(), [&](const wl::Tile *pathTile){
+        return pathTile->GetCoordinate() == coordinate;
+    }) != path.end());
+}
+
+- (void)drawMapWithSource:(wl::Coordinate *)source
+              destination:(wl::Coordinate *)destination
+                     path:(const std::list<wl::Tile *> &)path
 {
     /* reset the tile colors */
     for (UIView *view in self.view.subviews) {
         if ([view isKindOfClass:[TileView class]]) {
             TileView *tileVw = (TileView *)view;
-            tileVw.backgroundColor = (_map.GetTileAtCoordinate([tileVw coordinates]).IsWalkable()) ? [UIColor brownColor] : [UIColor blueColor];
-            if ([tileVw coordinates] == _source) {
+            tileVw.backgroundColor = (_map.GetTileAtCoordinate([tileVw coordinates])->IsWalkable()) ? [UIColor brownColor] : [UIColor blueColor];
+            if ((source != nullptr) && [tileVw coordinates] == *source) {
+                tileVw.backgroundColor = [UIColor whiteColor];
+            } else if ((destination != nullptr) && [tileVw coordinates] == *destination) {
+                tileVw.backgroundColor = [UIColor blackColor];
+            } else if (!path.empty() && [self path:path contains:[tileVw coordinates]]) {
                 tileVw.backgroundColor = [UIColor orangeColor];
-            } else if ([tileVw coordinates] == _destination) {
-                tileVw.backgroundColor = [UIColor purpleColor];
             }
         }
     }
 }
 
-
-
-- (void)drawPath
+- (void)drawMapWithSource:(wl::Coordinate *)source
+              destination:(wl::Coordinate *)destination
 {
-    /* save target coords*/
-    //        [self log:[NSString stringWithFormat:@"{%d,%d} -> {%d,%d}", startX,startY,targetX,targetY] withalert:NO];
-    
-    
-    //        /* get some output buffer */
-    //        int outBufferSz = (int)self.rows.value * (int)self.columns.value;
-    //        int *outBuffer = (int *)malloc(sizeof(int) * outBufferSz);
-    //
-    //        /* start path finding */
-    //        int length = FindPath(startX, startY,
-    //                              targetX, targetY,
-    //                              _map, (int)self.columns.value, (int)self.rows.value,
-    //                              outBuffer, outBufferSz);
-    //        switch (length) {
-    //            case PATH_NONE: [self log:@"No path found" withalert:YES]; break;
-    //            case PATH_BUFOVERFLOW: [self log:@"outBuffer is small" withalert:YES]; break;
-    //            default:
-    //                int tileCount = length + 1;
-    //                [self log:[NSString stringWithFormat:@"path length = %d\ttile count = %d", length, tileCount] withalert:NO];
-    //                /* paint every path tile red */
-    //                for (int i = 0; i < tileCount; ++i) {
-    //                    printf("%d ", outBuffer[i]);
-    //                    TileView *pathTile = (TileView *)[self.view viewWithTag:INDEX_TO_TAG(outBuffer[i])];
-    //                    pathTile.backgroundColor = [UIColor redColor];
-    //                }
-    //                printf("\n");
-    //                break;
-    //        }
-    //        free(outBuffer);
+    [self drawMapWithSource:source destination:destination path:{}];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -191,17 +182,22 @@
     CGPoint tchPoint = [touch locationInView:self.view];
     
     /* clamp the values from screen coordinates to map coordinates */
-    int r = tchPoint.y/(self.view.bounds.size.height-MAP_Y_OFFSET) * self.rows.value;
-    int c = tchPoint.x/self.view.bounds.size.width * self.columns.value;
+    wl::Coordinate touchCoord(tchPoint.y/(self.view.bounds.size.height-MAP_Y_OFFSET) * self.rows.value,
+                              tchPoint.x/self.view.bounds.size.width * self.columns.value);
     
     /* toggle touch types */
     if (_touchCount == 0) {
-        _source = wl::Coordinate(r, c);
+        [self drawMapWithSource:&touchCoord destination:nullptr];
     } else if (_touchCount == 1) {
-        _destination = wl::Coordinate(r, c);
+        std::list<wl::Tile *> path = wl::FindPath(_lastTouch, touchCoord, _map);
+        std::for_each(path.begin(), path.end(), [](const wl::Tile *tile) {
+            std::cout << tile->GetCoordinate() << std::endl;
+        });
+        //        LogPath(path);
+        [self drawMapWithSource:&_lastTouch destination:&touchCoord path:path];
     }
-    [self drawMap];
     
+    _lastTouch = touchCoord;
     _touchCount = (_touchCount+1)%2;
 }
 

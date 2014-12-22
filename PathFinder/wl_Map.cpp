@@ -8,6 +8,7 @@
 
 #include "wl_Map.h"
 #include <cassert>
+#include <iostream>
 
 namespace wl {
     
@@ -40,13 +41,23 @@ namespace wl {
                 a.GetColumn() == b.GetColumn());
     }
     
+    std::ostream &operator<<(std::ostream &os, const Coordinate &coord)
+    {
+        os << "{" << coord.GetRow() << ", " << coord.GetColumn() << "}";
+        return os;
+    }
+
+    
 #pragma mark -
 #pragma mark Tile
 #pragma mark -
     
     Tile::Tile(const Coordinate &c, const bool w) :
     _coord(c),
-    _walkable(w)
+    _walkable(w),
+    _distance(0),
+    _heuristic(0),
+    _parent(nullptr)
     {}
     
     const Coordinate Tile::GetCoordinate() const
@@ -63,6 +74,33 @@ namespace wl {
     {
         return (a.GetCoordinate() ==  b.GetCoordinate());
     }
+    
+    int Tile::GetScore() const
+    {
+        return _distance + _heuristic;
+    }
+    
+    int Tile::GetDistance() const
+    {
+        return _distance;
+    }
+    
+    void Tile::UpdateParent(Tile *tile)
+    {
+        _parent = tile;
+        _distance = tile->_distance + 1;
+    }
+    
+    void Tile::UpdateHeuristics(const int heuristics)
+    {
+        _heuristic = heuristics;
+    }
+    
+    Tile *Tile::GetParent() const
+    {
+        return _parent;
+    }
+
     
 #pragma mark -
 #pragma mark Map
@@ -83,15 +121,30 @@ namespace wl {
         return _size;
     }
     
-    Tile & Map::GetTileAtCoordinate(const Coordinate &coords)
+    const Tile * Map::GetTileAtCoordinate(const Coordinate &coords) const
     {
-        std::vector<Tile>::iterator result =
+        std::vector<Tile>::const_iterator result =
         std::find_if(_data.begin(), _data.end(), [&](const Tile &tile){
             return (tile.GetCoordinate() == coords);
         });
-        assert(result != _data.end());
+        if (result == _data.end()) {
+            return nullptr;
+        }
         
-        return *result;
+        return &(*result);
+    }
+    
+    Tile *Map::GetTileAtCoordinate(const Coordinate &coords)
+    {
+        std::vector<Tile>::iterator result =
+        std::find_if(_data.begin(), _data.end(), [&](Tile &tile){
+            return (tile.GetCoordinate() == coords);
+        });
+        if (result == _data.end()) {
+            return nullptr;
+        }
+        
+        return &(*result);
     }
     
 #pragma mark -
@@ -111,4 +164,24 @@ namespace wl {
         return Map(size, data);
     }
     
+    std::vector<Coordinate> Neighbors(const Coordinate &coord)
+    {
+        std::vector<Coordinate> neighbors;
+        unsigned int r = coord.GetRow();
+        unsigned int c = coord.GetColumn();
+        neighbors.push_back(Coordinate(r, c-1)); /* left */
+        neighbors.push_back(Coordinate(r-1, c)); /* top */
+        neighbors.push_back(Coordinate(r, c+1)); /* right */
+        neighbors.push_back(Coordinate(r+1, c)); /* bottom */
+        return neighbors;
+    }
+
+    int ManhattanDistance(const Coordinate &a, const Coordinate &b)
+    {
+        int rdiff = b.GetRow() - a.GetRow();
+        rdiff *= (rdiff < 0) ? -1 : 1;
+        int cdiff = b.GetColumn() - a.GetColumn();
+        cdiff *= (cdiff < 0) ? -1 : 1;
+        return rdiff + cdiff;
+    }
 }

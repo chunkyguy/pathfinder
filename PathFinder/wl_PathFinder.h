@@ -9,13 +9,13 @@
 #ifndef __PathFinder__wl_PathFinder__
 #define __PathFinder__wl_PathFinder__
 #include "wl_Map.h"
-#include <list>
 
 namespace wl {
-    
-    std::list<Tile> FindPath(const Coordinate &start,
-                             const Coordinate &end,
-                             const wl::Map &map);
+
+    std::list<Tile*> FindPath(const Coordinate &start,
+                                   const Coordinate &end,
+                                   Map &map);
+
 }
 
 #endif /* defined(__PathFinder__wl_PathFinder__) */
